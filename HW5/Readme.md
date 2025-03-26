@@ -1,10 +1,10 @@
 ## power.c
 
 執行power.c
-```c
+、、、c
 gcc power.c
 ./a.out
-```
+、、、
 
 產生組合語言.s檔
 ```sh
