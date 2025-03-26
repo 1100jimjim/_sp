@@ -1,10 +1,23 @@
 ## power.c
 
-執行power.c
-、、、c
-gcc power.c
-./a.out
-、、、
+執行
+```c
+#include <stdio.h>
+
+int power(int base, int exp) {
+    int result = 1;
+    for (int i = 0; i < exp; i++) {
+        result *= base;
+    }
+    return result;
+}
+
+int main()
+{
+    printf("%d\n", power(2, 3));
+    return 0;
+}
+```
 
 產生組合語言.s檔
 ```sh
