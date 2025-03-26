@@ -1,6 +1,6 @@
 ## power.c
 
-執行
+執行power.c
 ```c
 #include <stdio.h>
 
