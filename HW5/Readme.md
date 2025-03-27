@@ -26,7 +26,7 @@ int main()
 ```
 
 產生組合語言.s
-```sh
+```
 gcc -S power.c -o power.s
 ```
 
@@ -36,11 +36,11 @@ gcc -c power.c -o power.o
 ```
 
 反組譯目的檔
-```sh
+```
 objdump -d power.o
 ```
 
-```
+```sh
 power.o:     file format elf64-x86-64
 
 
