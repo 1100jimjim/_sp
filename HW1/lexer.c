@@ -1,52 +1,67 @@
 #include "compiler.h"
 
-char code[TMAX];
-char strTable[SMAX], *strTableEnd = strTable;
-char *tokens[SMAX];
+#define LMAX 100
+
+char *typeName[6] = {"Id", "Int", "Keyword", "Literal", "Char", "Op"};
+char code[TMAX], *p;
+char strTable[TMAX], *strTableEnd = strTable;
+char *tokens[TMAX];
 char tokenTop = 0, tokenIdx = 0;
-int types[SMAX];
-char *typeName[] = { "Id", "Int", "Keyword", "Literal", "Char", "Op" };
+char token[LMAX];
 
 int isKeyword(char *s) {
   return strcmp(s, "if") == 0 || strcmp(s, "else") == 0 ||
          strcmp(s, "while") == 0 || strcmp(s, "do") == 0;
 }
 
-void lex(char *text) {
-  char *p = text;
-  while (*p) {
-    while (*p == ' ' || *p == '\n' || *p == '\t' || *p == '\r') p++;
-    if (*p == '\0') break;
+char *scan() {
+  while (isspace(*p)) p++;
+  if (*p == '\0') return NULL;
 
-    if (isDigit(*p)) {
-      tokens[tokenTop] = strTableEnd;
-      types[tokenTop++] = Int;
-      while (isDigit(*p)) *strTableEnd++ = *p++;
-      *strTableEnd++ = '\0';
-    } else if (isAlpha(*p)) {
-      tokens[tokenTop] = strTableEnd;
-      while (isAlpha(*p) || isDigit(*p)) *strTableEnd++ = *p++;
-      *strTableEnd++ = '\0';
-      types[tokenTop] = isKeyword(tokens[tokenTop]) ? Keyword : Id;
-      tokenTop++;
-    } else if (strchr("=<>!&|", *p)) {
-      tokens[tokenTop] = strTableEnd;
-      *strTableEnd++ = *p;
-      if (*(p + 1) == '=' || (*p == '&' && *(p + 1) == '&') || (*p == '|' && *(p + 1) == '|')) {
-        *strTableEnd++ = *(p + 1);
-        p++;
-      }
-      *strTableEnd++ = '\0';
-      types[tokenTop++] = Op;
-      p++;
-    } else if (strchr("+-*/;(){}", *p)) {
-      tokens[tokenTop] = strTableEnd;
-      *strTableEnd++ = *p++;
-      *strTableEnd++ = '\0';
-      types[tokenTop++] = Op;
-    } else {
-      printf("Unknown character: %c\n", *p);
-      p++;
-    }
+  char *start = p;
+  int type;
+
+  if (*p == '"') { 
+    p++;
+    while (*p != '"' && *p != '\0') p++;
+    if (*p == '"') p++;
+    type = Literal;
+  } else if (isDigit(*p)) { 
+    while (isDigit(*p)) p++;
+    type = Int;
+  } else if (isAlpha(*p) || *p == '_') { 
+    while (isAlpha(*p) || isDigit(*p) || *p == '_') p++;
+    type = Id;
+  } else if (strchr("+-*/%&|<>!=", *p)) { 
+    char c = *p++;
+    if (*p == '=') p++; // eg. +=, ==, !=, <=
+    else if ((c == '+' || c == '-' || c == '&' || c == '|') && *p == c) p++; // eg. ++, --, &&, ||
+    type = Op;
+  } else { // 單字元符號: (), ;, { }, ...
+    p++;
+    type = Char;
+  }
+
+  int len = p - start;
+  strncpy(token, start, len);
+  token[len] = '\0';
+  return token;
+}
+
+void lex(char *text) {
+  printf("========== lex ==============\n");
+  p = text;
+  tokenTop = 0;
+  strTableEnd = strTable;
+
+  while (1) {
+    char *tok = scan();
+    if (tok == NULL) break;
+
+    strcpy(strTableEnd, tok);
+    tokens[tokenTop++] = strTableEnd;
+    strTableEnd += strlen(tok) + 1;
+
+    printf("token=%s\n", tok);
   }
 }
