@@ -495,7 +495,7 @@ int run(int *pc, int *bp, int *sp) { // 虛擬機 => pc: 程式計數器, sp: �
     else if (i == PRTF) { t = sp + pc[1]; a = printf((char *)t[-1], t[-2], t[-3], t[-4], t[-5], t[-6]); } // printf("....", a, b, c, d, e)
     else if (i == MALC) a = (int)malloc(*sp); // 分配記憶體
     else if (i == FREE) free((void *)*sp); // 釋放記憶體
-     else if (i == MSET) a = (int)memset((char *)sp[2], sp[1], *sp); // 設定記憶體
+    else if (i == MSET) a = (int)memset((char *)sp[2], sp[1], *sp); // 設定記憶體
     else if (i == MCMP) a = memcmp((char *)sp[2], (char *)sp[1], *sp); // 比較記憶體
     else if (i == EXIT) { printf("exit(%d) cycle = %d\n", *sp, cycle); return *sp; } // EXIT 離開
     else { printf("unknown instruction = %d! cycle = %d\n", i, cycle); return -1; } // 錯誤處理
