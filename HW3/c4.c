@@ -6,6 +6,7 @@
 
 // Written by Robert Swierczek
 // 修改者: 陳鍾誠 (模組化並加上中文註解)
+// 加入do while迴圈
  
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,7 +34,7 @@ int *e, *le,  // current position in emitted code (e: 目前機器碼指標, le:
 // tokens and classes (operators last and in precedence order) (按優先權順序排列)
 enum { // token : 0-127 直接用該字母表達， 128 以後用代號。
   Num = 128, Fun, Sys, Glo, Loc, Id,
-  Char, Else, Enum, If, Int, Return, Sizeof, While,
+  Char, Else, Enum, If, Int, Return, Sizeof, While, Do,
   Assign, Cond, Lor, Lan, Or, Xor, And, Eq, Ne, Lt, Gt, Le, Ge, Shl, Shr, Add, Sub, Mul, Div, Mod, Inc, Dec, Brak
 };
 
@@ -323,6 +324,17 @@ void stmt() // 陳述 statement
     *++e = JMP; *++e = (int)a;
     *b = (int)(e + 1);
   }
+  else if (tk == Do) { // do-while 語句
+    next();
+    a = e + 1;
+    stmt();
+    if (tk == While) next(); else { printf("%d: while expected in do-while\n", line); exit(-1); }
+    if (tk == '(') next(); else { printf("%d: open paren expected\n", line); exit(-1); }
+    expr(Assign);
+    if (tk == ')') next(); else { printf("%d: close paren expected\n", line); exit(-1); }
+    *++e = BNZ; *++e = (int)a;
+    if (tk == ';') next(); else { printf("%d: semicolon expected after do-while\n", line); exit(-1); }
+  }
   else if (tk == Return) { // return 語句
     next();
     if (tk != ';') expr(Assign);
@@ -448,7 +460,7 @@ int run(int *pc, int *bp, int *sp) { // 虛擬機 => pc: 程式計數器, sp: �
   int i, *t;    // temps
 
   cycle = 0;
-  do {
+  while (1) {
     i = *pc++; ++cycle;
     if (debug) {
       printf("%d> %.4s", cycle,
