@@ -6,7 +6,6 @@
 
 // Written by Robert Swierczek
 // 修改者: 陳鍾誠 (模組化並加上中文註解)
-// 修改者: [Your Name] (加入 do while 迴圈)
  
 #include <stdio.h>
 #include <stdlib.h>
