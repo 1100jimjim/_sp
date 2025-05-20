@@ -9,9 +9,8 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 from statsmodels.tsa.arima.model import ARIMA
-import time  # ✅ 新增 time 模組
+import time
 
-# 單一頁面爬蟲 function
 def fetch_page_data(page):
     base_url = "https://www.pilio.idv.tw/lto/listbbk.asp?indexpage={}&orderby=new"
     headers = {"User-Agent": "Mozilla/5.0"}
@@ -141,13 +140,12 @@ def show_statistics(history_data):
     print("\n📌 第一區出現最多的 6 個號碼：", top_6_first)
     print("📌 第二區出現最多的 1 個號碼：", top_1_second)
 
-# 主流程
 try:
-    start_time = time.time()  # ⏱️ 開始時間
+    start_time = time.time() 
 
     history_data = fetch_lottery_history()
 
-    end_time = time.time()  # ⏱️ 結束時間
+    end_time = time.time() 
     duration = end_time - start_time
     print(f"\n⏱️ 歷史開獎資料爬取完成，耗時：{duration:.2f} 秒")
 
