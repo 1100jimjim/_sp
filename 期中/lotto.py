@@ -4,7 +4,7 @@ import random
 import collections
 import numpy as np
 import pandas as pd
-import time  # ✅ 加入計時模組
+import time 
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
@@ -54,9 +54,9 @@ def extract_features(history_data):
         second_zone_freq.update([second_zone])
 
         features = []
-        for num in range(1, 50):  # 假設第一區為1~49
-            features.append(first_zone.count(num))  # 此期是否出現
-            features.append(first_zone_freq[num])  # 到目前為止出現頻率
+        for num in range(1, 50): 
+            features.append(first_zone.count(num))  
+            features.append(first_zone_freq[num]) 
 
         features.append(second_zone)
         features.append(second_zone_freq[second_zone])
@@ -121,13 +121,12 @@ def show_statistics(history_data):
     print("\n📌 第一區出現最多的 6 個號碼：", top_6_first)
     print("📌 第二區出現最多的 1 個號碼：", top_1_second)
 
-# 主流程
 try:
-    start_time = time.time()  # ⏱️ 開始計時
+    start_time = time.time() 
 
     history_data = fetch_lottery_history()
 
-    end_time = time.time()  # ⏱️ 結束計時
+    end_time = time.time() 
     duration = end_time - start_time
     print(f"\n⌛ 爬取歷史開獎資料共花費 {duration:.2f} 秒")
 
