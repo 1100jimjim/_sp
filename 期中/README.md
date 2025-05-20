@@ -1,6 +1,6 @@
 # 使用python實作一個簡易爬蟲，爬取威力彩每期的開獎資料，並給出現一期的預估
 
-## crawler_single.py
+## lotto.py
 ### 沒有使用multithread的版本，用for迴圈爬取每個分頁的資料
 執行結果:
 ```py
