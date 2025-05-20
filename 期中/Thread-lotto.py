@@ -9,6 +9,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 from statsmodels.tsa.arima.model import ARIMA
+import time  # ✅ 新增 time 模組
 
 # 單一頁面爬蟲 function
 def fetch_page_data(page):
@@ -142,7 +143,13 @@ def show_statistics(history_data):
 
 # 主流程
 try:
+    start_time = time.time()  # ⏱️ 開始時間
+
     history_data = fetch_lottery_history()
+
+    end_time = time.time()  # ⏱️ 結束時間
+    duration = end_time - start_time
+    print(f"\n⏱️ 歷史開獎資料爬取完成，耗時：{duration:.2f} 秒")
 
     print("\n📊 以下為最新的 5 期開獎數據：")
     for i, (first_zone, second_zone) in enumerate(history_data[:5], 1):
